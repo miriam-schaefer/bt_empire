@@ -69,7 +69,7 @@ q5
 
 
 ## Question 6
-Report in a table the most extreme stars with respect to the numerical variables. This should include, for instance, the most and least massive stars. Do that variable by variable.
+*Report in a table the most extreme stars with respect to the numerical variables. This should include, for instance, the most and least massive stars. Do that variable by variable.*
 
 ```{r}
 # Distance 
@@ -103,5 +103,16 @@ knitr::kable((q6_table), "simple")
 ```
 
 
+## Question 8
+*Load datasets on factions.*
+
+```{r}
+factions <- vroom(here("datasets", "The-factions.csv")) 
+
+```
+
+```{r}
+faction_ctrl <- vroom(here("datasets", "SYSTEM+CONTROL.csv"))
+```
 
 
