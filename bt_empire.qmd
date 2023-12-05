@@ -62,7 +62,8 @@ knitr::kable((q4_table), "simple")
 q5 <- data |> 
   na.omit() |>
   ggplot(aes(x=`effective temperature`, y=`Luminosity`)) + 
-  geom_point()
+  geom_point() + 
+  labs(title="Luminosity as a function of temperature")
 
 q5
 ```
@@ -108,11 +109,36 @@ knitr::kable((q6_table), "simple")
 
 ```{r}
 factions <- vroom(here("datasets", "The-factions.csv")) 
-
+factions[factions == 'Unknown'] <- NA
 ```
 
 ```{r}
-faction_ctrl <- vroom(here("datasets", "SYSTEM+CONTROL.csv"))
+faction_ctrl <- vroom(here("datasets", "SYSTEM+CONTROL.csv")) 
+#sum(is.na(faction_ctrl))     ## no missing values in this dataset
 ```
+
+## Question 9
+Include in your document a table that gives the number of abandoned, independent and undiscovered star systems during year 2765.
+In addition to these three specific factions, there might be some missing data in the files. 
+• A stands for abandoned star systems;
+• I stands for independent systems (they are not controlled by any faction); 
+• U stands for systems that are not yet discovered during year 2765.
+
+```{r}
+abandoned <- sum(faction_ctrl$Faction_key == "A", na.rm=T)
+independent <- sum(faction_ctrl$Faction_key == "I", na.rm=T)
+undiscovered <- sum(faction_ctrl$Faction_key == "U") 
+
+q9_table <- data.frame(
+  Category = c("Abandoned", "Independent", "Undiscovered"),
+  Count = c(abandoned, independent, undiscovered)
+)
+
+knitr::kable((q9_table), "simple") 
+```
+
+
+
+
 
 
