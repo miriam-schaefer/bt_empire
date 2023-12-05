@@ -118,16 +118,12 @@ faction_ctrl <- vroom(here("datasets", "SYSTEM+CONTROL.csv"))
 ```
 
 ## Question 9
-Include in your document a table that gives the number of abandoned, independent and undiscovered star systems during year 2765.
-In addition to these three specific factions, there might be some missing data in the files. 
-• A stands for abandoned star systems;
-• I stands for independent systems (they are not controlled by any faction); 
-• U stands for systems that are not yet discovered during year 2765.
+*Include in your document a table that gives the number of abandoned, independent and undiscovered star systems during year 2765.*
 
 ```{r}
 abandoned <- sum(faction_ctrl$Faction_key == "A", na.rm=T)
 independent <- sum(faction_ctrl$Faction_key == "I", na.rm=T)
-undiscovered <- sum(faction_ctrl$Faction_key == "U") 
+undiscovered <- sum(faction_ctrl$Faction_key == "U", na.rm=T) 
 
 q9_table <- data.frame(
   Category = c("Abandoned", "Independent", "Undiscovered"),
@@ -136,6 +132,25 @@ q9_table <- data.frame(
 
 knitr::kable((q9_table), "simple") 
 ```
+
+
+
+
+## Question 11
+Represent graphically the number of star systems controlled by each faction that control at least one system. Make sure to use the full name of the factions. 
+
+```{r}
+# merge dataset to obtain full names of the factions
+q11_merged <- merge(factions, faction_ctrl, by = "Faction_key", all.x = TRUE) 
+
+
+# plot 
+ggplot(q11_merged, aes(x=`faction name`)) + 
+  geom_bar() + 
+      theme(axis.text.x = element_text(angle = 45)) 
+
+```
+
 
 
 
