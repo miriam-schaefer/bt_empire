@@ -1,0 +1,107 @@
+---
+title: "SCHAEFER"
+author: "Miriam Schaefer"
+format: 
+  html:
+    echo: false 
+    warning: false
+---
+
+Find my github repository for this lab [here](https://github.com/miriam-schaefer/bt_empire).
+
+
+```{r}
+here::i_am("bt_empire.Rproj")
+library(here)
+library(vroom)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+## Question 3
+
+```{r}
+data <- vroom(here("datasets", "data%systems.csv"))
+```
+
+```{r}
+summary(data)
+```
+
+## Question 4 
+Describe the data set with a properly formatted table (either using kable or via a markdown table) according to the following metrics:
+
+number of observations (i.e. star systems)
+• number of variables
+• number of missing values for each variable with missing values 
+• number of observations with at least one missing value
+
+
+```{r}
+No_observations <- nrow(data) 
+No_variables <- ncol(data) 
+No_NA <- colSums(is.na(data)) 
+Obs_with_NA <- sum(rowSums(is.na(data))>0) 
+
+q4_table <- data.frame(
+  Metric = c("Number of Observations", "Number of Variables", "Missing Values per Variable", "Observations with Missing Values"),
+  Value = c(No_observations, No_variables, paste(No_NA, collapse = ", "), Obs_with_NA)
+)
+
+knitr::kable((q4_table), "simple") 
+```
+
+
+
+
+## Question 5
+*Represent graphically the luminosity of a star as a function of its temperature. Make sure to get rid of any warning or error!*
+
+```{r}
+q5 <- data |> 
+  na.omit() |>
+  ggplot(aes(x=`effective temperature`, y=`Luminosity`)) + 
+  geom_point()
+
+q5
+```
+
+
+## Question 6
+Report in a table the most extreme stars with respect to the numerical variables. This should include, for instance, the most and least massive stars. Do that variable by variable.
+
+```{r}
+# Distance 
+min_dist <- min(data$`DISTANCE (LIGHTYEARS)`, na.rm=T) 
+max_dist <- max(data$`DISTANCE (LIGHTYEARS)`, na.rm=T)
+
+# Temperature 
+min_temp <- min(data$`effective temperature`, na.rm=T)
+max_temp <- max(data$`effective temperature`, na.rm=T) 
+
+# Mass 
+min_mass <- min(data$MASS, na.rm=T)
+max_mass <- max(data$MASS, na.rm=T) 
+
+# Radius 
+min_rad <- min(data$`STAR RADIUS`, na.rm=T) 
+max_rad <- max(data$`STAR RADIUS`, na.rm=T) 
+
+# Luminosity 
+min_lum <- min(data$Luminosity, na.rm=T) 
+max_lum <- max(data$Luminosity, na.rm=T)
+
+
+q6_table <- data.frame(
+  Variable = c("Distance", "Temperature", "Mass", "Radius", "Luminosity"),
+  Minimum = c(min_dist, min_temp, min_mass, min_rad, min_lum),
+  Maximum = c(max_dist, max_temp, max_mass, max_rad, max_lum)
+)
+
+knitr::kable((q6_table), "simple") 
+```
+
+
+
+
